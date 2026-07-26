@@ -1,0 +1,21 @@
+# 개발 중 DB만 Docker로 띄울 때 사용
+# 앱은 IDE(IntelliJ/Cursor)에서 직접 실행
+#
+# 실행: docker compose -f docker-compose.db-only.yml up -d
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: spring-admin-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: admindb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

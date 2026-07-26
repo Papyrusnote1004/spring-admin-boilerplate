@@ -1,0 +1,36 @@
+services:
+
+  # ── PostgreSQL ─────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    container_name: spring-admin-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: admindb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # ── Spring Boot App ────────────────────────────────────────────
+  app:
+    build: .
+    container_name: spring-admin-app
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: admindb
+      DB_USER: admin
+      DB_PASSWORD: admin
+      SERVER_PORT: 8080
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:
