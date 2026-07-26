@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head><title>사용자 관리 - Admin</title></head>
+<body>
+<div layout:fragment="content">
+
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h1 class="h2 mb-0">사용자 관리</h1>
+                    <p class="mb-0">시스템 사용자를 관리합니다.</p>
+                </div>
+                <div class="col-auto">
+                    <a th:href="@{/admin/users/new}" class="btn btn-primary">
+                        <i class="bi bi-person-plus"></i> 사용자 등록
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="card fade-in">
+            <div class="card-header">
+                <h5 class="mb-0 text-primary">
+                    <i class="bi bi-people me-2"></i>사용자 목록
+                    <span class="badge bg-primary ms-1" th:text="${users.size()}">0</span>
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>이름</th>
+                                <th>이메일</th>
+                                <th width="100">역할</th>
+                                <th width="80">상태</th>
+                                <th width="130">등록일</th>
+                                <th width="100">관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="user : ${users}">
+                                <td>
+                                    <a th:href="@{/admin/users/{id}(id=${user.id})}"
+                                       class="text-decoration-none fw-semibold"
+                                       th:text="${user.name}">이름</a>
+                                </td>
+                                <td th:text="${user.email}">이메일</td>
+                                <td>
+                                    <span th:if="${user.role.name() == 'ADMIN'}" class="badge bg-danger">ADMIN</span>
+                                    <span th:unless="${user.role.name() == 'ADMIN'}" class="badge bg-secondary">USER</span>
+                                </td>
+                                <td>
+                                    <span th:if="${user.active}" class="badge bg-success">활성</span>
+                                    <span th:unless="${user.active}" class="badge bg-warning text-dark">비활성</span>
+                                </td>
+                                <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd')}">-</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a th:href="@{/admin/users/{id}/edit(id=${user.id})}"
+                                           class="btn btn-outline-secondary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-outline-danger"
+                                                th:attr="data-id=${user.id}"
+                                                onclick="deleteUser(this.getAttribute('data-id'))">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr th:if="${users.empty}">
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <i class="bi bi-inbox display-5 d-block mb-2"></i>
+                                    등록된 사용자가 없습니다.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div layout:fragment="scripts">
+<script>
+function deleteUser(id) {
+    if (!confirm('이 사용자를 삭제하시겠습니까?')) return;
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/admin/users/' + id + '/delete';
+    document.body.appendChild(form);
+    form.submit();
+}
+</script>
+</div>
+</body>
+</html>

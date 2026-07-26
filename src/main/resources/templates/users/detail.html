@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head><title>사용자 상세 - Admin</title></head>
+<body>
+<div layout:fragment="content">
+
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h1 class="h2 mb-0" th:text="${user.name}">이름</h1>
+                    <p class="mb-0 text-muted small" th:text="${user.email}">이메일</p>
+                </div>
+                <div class="col-auto d-flex gap-2">
+                    <a th:href="@{/admin/users/{id}/edit(id=${user.id})}" class="btn btn-outline-secondary">
+                        <i class="bi bi-pencil"></i> 수정
+                    </a>
+                    <a th:href="@{/admin/users}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> 목록
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card fade-in">
+                    <div class="card-header"><h6 class="mb-0">기본 정보</h6></div>
+                    <div class="card-body">
+                        <dl class="row mb-0">
+                            <dt class="col-4 text-muted">이름</dt>
+                            <dd class="col-8" th:text="${user.name}">-</dd>
+                            <dt class="col-4 text-muted">이메일</dt>
+                            <dd class="col-8" th:text="${user.email}">-</dd>
+                            <dt class="col-4 text-muted">역할</dt>
+                            <dd class="col-8">
+                                <span th:if="${user.role.name() == 'ADMIN'}" class="badge bg-danger">ADMIN</span>
+                                <span th:unless="${user.role.name() == 'ADMIN'}" class="badge bg-secondary">USER</span>
+                            </dd>
+                            <dt class="col-4 text-muted">상태</dt>
+                            <dd class="col-8">
+                                <span th:if="${user.active}" class="badge bg-success">활성</span>
+                                <span th:unless="${user.active}" class="badge bg-warning text-dark">비활성</span>
+                            </dd>
+                            <dt class="col-4 text-muted">등록일</dt>
+                            <dd class="col-8" th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}">-</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card fade-in">
+                    <div class="card-header"><h6 class="mb-0">비밀번호 초기화</h6></div>
+                    <div class="card-body">
+                        <form th:action="@{/admin/users/{id}/reset-password(id=${user.id})}" method="post">
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">새 비밀번호</label>
+                                <input type="password" class="form-control" id="newPassword" name="newPassword"
+                                       placeholder="새 비밀번호 입력" required>
+                            </div>
+                            <button type="submit" class="btn btn-warning btn-sm"
+                                    onclick="return confirm('비밀번호를 초기화하시겠습니까?')">
+                                <i class="bi bi-key"></i> 초기화
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

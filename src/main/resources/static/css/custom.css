@@ -1,0 +1,278 @@
+/* ===================================================================
+   Spring Admin Boilerplate - Custom CSS
+   =================================================================== */
+
+:root {
+    --sidebar-width: 240px;
+    --sidebar-bg: #1e2a3a;
+    --sidebar-text: #c8d6e5;
+    --sidebar-active-bg: rgba(255, 255, 255, 0.12);
+    --sidebar-active-text: #ffffff;
+    --sidebar-hover-bg: rgba(255, 255, 255, 0.07);
+    --primary: #4361ee;
+    --toolbar-height: 52px;
+}
+
+/* ── Layout ─────────────────────────────────────────────────────── */
+body {
+    background-color: #f4f6fb;
+    font-size: 0.9rem;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-bg);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.15) transparent;
+}
+
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+.main-content {
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+    padding-top: var(--toolbar-height);
+}
+
+/* ── Sidebar brand ──────────────────────────────────────────────── */
+.sidebar-brand {
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar-brand a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.sidebar-brand__tagline {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+}
+
+/* ── Nav links ──────────────────────────────────────────────────── */
+.sidebar .nav-link {
+    color: var(--sidebar-text);
+    padding: 0.45rem 1rem;
+    border-radius: 6px;
+    margin: 1px 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    transition: background 0.15s, color 0.15s;
+}
+
+.sidebar .nav-link:hover {
+    background: var(--sidebar-hover-bg);
+    color: #fff;
+}
+
+.sidebar .nav-link.active {
+    background: var(--sidebar-active-bg);
+    color: var(--sidebar-active-text);
+    font-weight: 600;
+}
+
+.sidebar .nav-link i {
+    width: 18px;
+    text-align: center;
+    opacity: 0.8;
+    font-size: 0.95rem;
+}
+
+.nav-section-hint {
+    font-size: 0.68rem;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    padding: 0.5rem 1rem 0.15rem;
+    list-style: none;
+}
+
+.nav-divider {
+    border-color: rgba(255,255,255,0.08);
+    margin: 0.4rem 0;
+}
+
+.nav-logout {
+    color: rgba(255,100,100,0.8) !important;
+}
+.nav-logout:hover {
+    color: #ff8080 !important;
+    background: rgba(255,100,100,0.1) !important;
+}
+
+/* ── Group toggle buttons ───────────────────────────────────────── */
+.nav-group-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.4);
+    font-size: 0.68rem;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem 0.15rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.toggle-chevron {
+    font-size: 0.6rem;
+    transition: transform 0.2s;
+}
+.nav-group-toggle.collapsed .toggle-chevron { transform: rotate(-90deg); }
+
+/* ── Page toolbar ───────────────────────────────────────────────── */
+.page-toolbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: var(--sidebar-width);
+    height: var(--toolbar-height);
+    z-index: 99;
+    background: #fff;
+    border-bottom: 1px solid #e8ecf0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 1.5rem;
+    gap: 1rem;
+}
+
+.page-toolbar__user {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #555;
+    font-size: 0.875rem;
+}
+
+.page-toolbar__user i { font-size: 1.1rem; color: var(--primary); }
+.page-toolbar__user-name { font-weight: 600; }
+
+/* ── Mobile ─────────────────────────────────────────────────────── */
+.mobile-topbar {
+    background: var(--sidebar-bg);
+    height: 52px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 150;
+}
+
+@media (max-width: 767px) {
+    .main-content { margin-left: 0; padding-top: calc(var(--toolbar-height) + 52px); }
+    .page-toolbar { left: 0; top: 52px; }
+    .sidebar { transform: translateX(-100%); transition: transform 0.25s; top: 52px; }
+    .sidebar.show { transform: translateX(0); }
+    .sidebar-overlay.show { display: block; }
+}
+
+/* ── Page header ────────────────────────────────────────────────── */
+.page-header {
+    background: #fff;
+    border-bottom: 1px solid #e8ecf0;
+    padding: 1.25rem 0;
+    margin-bottom: 1.5rem;
+}
+
+.page-header h1 { font-size: 1.4rem; font-weight: 700; color: #1e2a3a; }
+.page-header p { color: #6c757d; font-size: 0.85rem; }
+
+/* ── Cards ──────────────────────────────────────────────────────── */
+.card {
+    border: 1px solid #e8ecf0;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.card-header {
+    background: #fff;
+    border-bottom: 1px solid #e8ecf0;
+    padding: 0.85rem 1.25rem;
+}
+
+/* ── Stat cards ─────────────────────────────────────────────────── */
+.stat-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid #e8ecf0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.stat-card__icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.stat-card__value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #1e2a3a;
+}
+
+.stat-card__label {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: 0.15rem;
+}
+
+/* ── Fade in ────────────────────────────────────────────────────── */
+.fade-in {
+    animation: fadeIn 0.25s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Table ──────────────────────────────────────────────────────── */
+.table thead th {
+    background: #f8f9fc;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #6c757d;
+    font-weight: 600;
+    border-bottom: 2px solid #e8ecf0;
+    white-space: nowrap;
+}
+
+.table tbody tr:hover { background: #f8f9ff; }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head><title>사용자 수정 - Admin</title></head>
+<body>
+<div layout:fragment="content">
+
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col"><h1 class="h2 mb-0">사용자 수정</h1></div>
+                <div class="col-auto">
+                    <a th:href="@{/admin/users/{id}(id=${user.id})}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> 상세로
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="card fade-in" style="max-width: 600px;">
+            <div class="card-body">
+                <form th:action="@{/admin/users/{id}(id=${user.id})}" method="post" th:object="${user}">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-muted">이메일</label>
+                        <input type="text" class="form-control" th:value="${user.email}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label fw-semibold">이름 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" th:field="*{name}"
+                               placeholder="이름을 입력하세요" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="role" class="form-label fw-semibold">역할 <span class="text-danger">*</span></label>
+                        <select class="form-select" id="role" th:field="*{role}" required>
+                            <option th:each="r : ${roles}" th:value="${r}" th:text="${r.name()}"
+                                    th:selected="${r == user.role}">역할</option>
+                        </select>
+                    </div>
+                    <div class="mb-4 form-check">
+                        <input type="checkbox" class="form-check-input" id="active" th:field="*{active}">
+                        <label class="form-check-label" for="active">활성 계정</label>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save"></i> 저장
+                        </button>
+                        <a th:href="@{/admin/users/{id}(id=${user.id})}" class="btn btn-outline-secondary">취소</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

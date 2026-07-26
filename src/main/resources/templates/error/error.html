@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head><title>오류 - Admin</title></head>
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 60vh;">
+            <div class="text-center">
+                <h1 class="display-1 fw-bold text-muted" th:text="${status ?: 500}">500</h1>
+                <h4 class="mb-3" th:text="${message ?: '알 수 없는 오류가 발생했습니다.'}">오류 메시지</h4>
+                <a th:href="@{/dashboard}" class="btn btn-primary">
+                    <i class="bi bi-house me-1"></i> 대시보드로 이동
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
