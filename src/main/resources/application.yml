@@ -47,7 +47,7 @@ management:
         include: health,info
 
 # =============================================================================
-# local — H2 인메모리 DB
+# local — 로컬 PostgreSQL DB (create-drop)
 # =============================================================================
 ---
 spring:
@@ -55,20 +55,16 @@ spring:
     activate:
       on-profile: local
   datasource:
-    url: jdbc:h2:mem:admindb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:admindb}
+    username: ${DB_USER:admin}
+    password: ${DB_PASSWORD:admin}
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: create-drop
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 # =============================================================================
 # prod — PostgreSQL
@@ -90,6 +86,26 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+# =============================================================================
+# test — H2 인메모리 (단위 테스트 전용, 로컬/운영과 무관)
+# =============================================================================
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
 
 server:
   port: ${SERVER_PORT:8080}
